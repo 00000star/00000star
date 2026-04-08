@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { isOnboarded } from "@/lib/store";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,18 +20,25 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     setTimeout(() => {
-      router.push("/dashboard");
+      if (!isOnboarded()) {
+        router.push("/onboarding");
+      } else {
+        router.push("/dashboard");
+      }
     }, 800);
   }
 
   function handleOfflineLogin() {
-    router.push("/dashboard");
+    if (!isOnboarded()) {
+      router.push("/onboarding");
+    } else {
+      router.push("/dashboard");
+    }
   }
 
   return (
     <main className="flex min-h-dvh flex-col items-center justify-center px-6 bg-rz-bg">
       <div className="animate-fade-in flex flex-col items-center w-full max-w-sm">
-        {/* Logo */}
         <div className="mb-8 flex flex-col items-center">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rz-primary to-rz-gold flex items-center justify-center mb-4 shadow-lg shadow-rz-primary/20">
             <span className="text-4xl font-black text-rz-bg tracking-tighter">

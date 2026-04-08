@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { label: "Home", href: "/dashboard", matchPrefix: "/dashboard", icon: HomeIcon },
   { label: "Path", href: "/path/math-o", matchPrefix: "/path", icon: PathIcon },
+  { label: "League", href: "/leaderboard", matchPrefix: "/leaderboard", icon: LeagueIcon },
   { label: "Exams", href: "/exam/exam_math_2024_p1", matchPrefix: "/exam", icon: ExamIcon },
-  { label: "SBP", href: "/sbp", matchPrefix: "/sbp", icon: SBPIcon },
-  { label: "Storage", href: "/offline", matchPrefix: "/offline", icon: StorageIcon },
+  { label: "More", href: "/offline", matchPrefix: "/offline", icon: MoreIcon },
 ] as const;
 
 export function BottomNav() {
@@ -98,7 +98,7 @@ function ExamIcon({ active }: { active: boolean }) {
   );
 }
 
-function SBPIcon({ active }: { active: boolean }) {
+function LeagueIcon({ active }: { active: boolean }) {
   return (
     <svg
       width="22"
@@ -110,15 +110,17 @@ function SBPIcon({ active }: { active: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <rect x="3" y="3" width="7" height="7" rx="1" />
-      <rect x="14" y="3" width="7" height="7" rx="1" />
-      <rect x="3" y="14" width="7" height="7" rx="1" />
-      <rect x="14" y="14" width="7" height="7" rx="1" />
+      <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+      <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+      <path d="M4 22h16" />
+      <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20 7 22" />
+      <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20 17 22" />
+      <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
     </svg>
   );
 }
 
-function StorageIcon({ active }: { active: boolean }) {
+function MoreIcon({ active }: { active: boolean }) {
   return (
     <svg
       width="22"
@@ -130,9 +132,9 @@ function StorageIcon({ active }: { active: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
-      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
-      <line x1="12" y1="22.08" x2="12" y2="12" />
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+      <circle cx="5" cy="12" r="1" />
     </svg>
   );
 }

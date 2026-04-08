@@ -3,8 +3,11 @@
 import { use, useState } from "react";
 import Link from "next/link";
 import { mockLessons } from "@/lib/mock-data";
+import { extendedQuestions } from "@/lib/question-bank";
 import { Latex } from "@/components/ui/latex";
 import { appendEvent } from "@/lib/store";
+import { recordAnswer, getNodeAccuracy } from "@/lib/spaced-repetition";
+import { addWeeklyXP } from "@/lib/leaderboard";
 
 export default function LessonPage({
   params,
@@ -12,30 +15,43 @@ export default function LessonPage({
   params: Promise<{ nodeId: string }>;
 }) {
   const { nodeId } = use(params);
-  const lessons = mockLessons[nodeId] ?? mockLessons["n3"];
-  const lesson = lessons[0];
+  const baseQuestions = mockLessons[nodeId] ?? [];
+  const extraQuestions = extendedQuestions[nodeId] ?? [];
+  const lessons = [...baseQuestions, ...extraQuestions];
+  const fallback = mockLessons["m4"] ?? [];
+  const allLessons = lessons.length > 0 ? lessons : fallback;
+  const lesson = allLessons[0];
 
   const [selected, setSelected] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
-  const totalQuestions = lessons.length;
+  const totalQuestions = allLessons.length;
   const progress = (questionIdx + 1) / totalQuestions;
 
-  const currentLesson = lessons[questionIdx] ?? lesson;
+  const currentLesson = allLessons[questionIdx] ?? lesson;
   const isCorrect = selected === currentLesson.correctIndex;
+
+  const [accuracy, setAccuracy] = useState<number | null>(null);
 
   function handleCheck() {
     if (selected === null) return;
     setChecked(true);
+    const correct = selected === currentLesson.correctIndex;
+
+    recordAnswer(currentLesson.id, nodeId, correct);
+    if (correct) addWeeklyXP(currentLesson.xpReward);
+
     appendEvent({
       type: "lesson_answered",
       payload: {
         nodeId,
         lessonId: currentLesson.id,
         selected,
-        correct: selected === currentLesson.correctIndex,
+        correct,
       },
     });
+
+    setAccuracy(getNodeAccuracy(nodeId));
   }
 
   function handleNext() {
@@ -48,6 +64,8 @@ export default function LessonPage({
 
   const subjectId = nodeId.startsWith("p")
     ? "phys-o"
+    : nodeId.startsWith("he")
+    ? "heri-o"
     : nodeId.startsWith("h")
     ? "hist-o"
     : nodeId.startsWith("c")
@@ -175,6 +193,11 @@ export default function LessonPage({
             <p className="text-xs text-rz-text-muted">
               {currentLesson.explanation}
             </p>
+            {accuracy !== null && (
+              <p className="text-[11px] text-rz-text-dim mt-2">
+                Topic accuracy: {accuracy}% — {accuracy < 50 ? "this topic will appear in your reviews" : accuracy < 80 ? "getting there, keep practising" : "strong mastery!"}
+              </p>
+            )}
           </div>
         )}
       </div>
