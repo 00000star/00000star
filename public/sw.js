@@ -1,4 +1,4 @@
-const CACHE_NAME = "ruzivo-v1";
+const CACHE_NAME = "nhaka-v1";
 const STATIC_ASSETS = [
   "/",
   "/dashboard",

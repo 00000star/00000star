@@ -14,14 +14,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Ruzivo — Master Your ZIMSEC Exams",
+  title: "Nhaka — Own Your ZIMSEC Success",
   description:
     "Gamified, offline-first learning platform for ZIMSEC O-Level and A-Level students. Past papers, micro-lessons, and mock exams — built for Zimbabwe.",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "Ruzivo",
+    title: "Nhaka",
   },
 };
 

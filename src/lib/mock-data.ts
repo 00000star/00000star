@@ -27,8 +27,11 @@ export const mockUser: User = {
 };
 
 // ─── SUBJECTS ────────────────────────────────────────────────────────
-// Aligned to ZIMSEC 4004 Mathematics syllabus, 4023 Physics, 4024 Chemistry,
-// 2167 History (Southern Africa), 6081 Heritage Studies
+// Heritage-Based Education 2024-2030 Curriculum
+// 5 Compulsory: Mathematics (4004), English (1122), Indigenous Lang (3159/3155),
+//               Combined Science (5006), Heritage Studies (6081)
+// Electives: Physics (5055), Chemistry (5071), History (2167), Biology (5007),
+//            Geography (2248), Accounting (7112), Commerce (7103), Economics (2283)
 
 export const mockSubjects: Subject[] = [
   {
@@ -112,6 +115,97 @@ export const mockSubjects: Subject[] = [
       { id: "he3", title: "Cultural Heritage", description: "Norms, values, ubuntu, unhu philosophy", status: "locked", xpReward: 150, stars: 0, order: 3, lessonCount: 5, completedLessons: 0 },
       { id: "he4", title: "National Symbols & Monuments", description: "Flag, coat of arms, Great Zimbabwe, Heroes Acre", status: "locked", xpReward: 150, stars: 0, order: 4, lessonCount: 5, completedLessons: 0 },
       { id: "he5", title: "Constitution & Governance", description: "Arms of government, Bill of Rights, devolution", status: "locked", xpReward: 200, stars: 0, order: 5, lessonCount: 6, completedLessons: 0 },
+    ],
+  },
+  // ─── COMPULSORY: Combined Science (5006) ───────────────────────────
+  {
+    id: "csci-o",
+    name: "Combined Science",
+    level: "O-Level",
+    icon: "🔬",
+    color: "#06b6d4",
+    progress: 0.0,
+    nodes: [
+      { id: "cs1", title: "Living Things", description: "Cells, classification, nutrition, respiration", status: "active", xpReward: 120, stars: 0, order: 1, lessonCount: 6, completedLessons: 0 },
+      { id: "cs2", title: "Matter & Materials", description: "Elements, compounds, mixtures, separation", status: "locked", xpReward: 150, stars: 0, order: 2, lessonCount: 6, completedLessons: 0 },
+      { id: "cs3", title: "Energy & Forces", description: "Electricity, magnetism, forces, motion", status: "locked", xpReward: 200, stars: 0, order: 3, lessonCount: 8, completedLessons: 0 },
+      { id: "cs4", title: "Earth & Environment", description: "Water cycle, pollution, conservation, soil", status: "locked", xpReward: 150, stars: 0, order: 4, lessonCount: 5, completedLessons: 0 },
+    ],
+  },
+  // ─── COMPULSORY: English Language (1122) ────────────────────────────
+  {
+    id: "eng-o",
+    name: "English Language",
+    level: "O-Level",
+    icon: "📖",
+    color: "#f472b6",
+    progress: 0.0,
+    nodes: [
+      { id: "en1", title: "Comprehension", description: "Reading passages, inference, vocabulary in context", status: "active", xpReward: 120, stars: 0, order: 1, lessonCount: 6, completedLessons: 0 },
+      { id: "en2", title: "Summary Writing", description: "Identifying key points, concise writing", status: "locked", xpReward: 150, stars: 0, order: 2, lessonCount: 5, completedLessons: 0 },
+      { id: "en3", title: "Grammar & Usage", description: "Tenses, articles, prepositions, sentence structure", status: "locked", xpReward: 150, stars: 0, order: 3, lessonCount: 8, completedLessons: 0 },
+      { id: "en4", title: "Composition", description: "Narrative, descriptive, argumentative essays", status: "locked", xpReward: 200, stars: 0, order: 4, lessonCount: 6, completedLessons: 0 },
+      { id: "en5", title: "Letter & Report Writing", description: "Formal/informal letters, report format", status: "locked", xpReward: 150, stars: 0, order: 5, lessonCount: 5, completedLessons: 0 },
+    ],
+  },
+  // ─── COMPULSORY: Shona (3159) ──────────────────────────────────────
+  {
+    id: "shona-o",
+    name: "Shona",
+    level: "O-Level",
+    icon: "🗣️",
+    color: "#84cc16",
+    progress: 0.0,
+    nodes: [
+      { id: "sh1", title: "Dudziramutauro", description: "Grammar: mazwi, chirevo, mitsara", status: "active", xpReward: 100, stars: 0, order: 1, lessonCount: 6, completedLessons: 0 },
+      { id: "sh2", title: "Zvirungamutauro", description: "Idioms, proverbs, figurative language", status: "locked", xpReward: 150, stars: 0, order: 2, lessonCount: 5, completedLessons: 0 },
+      { id: "sh3", title: "Rondedzero", description: "Composition: narrative, descriptive, dialogue", status: "locked", xpReward: 200, stars: 0, order: 3, lessonCount: 6, completedLessons: 0 },
+      { id: "sh4", title: "Kunzwisisa", description: "Comprehension: reading passages, questions", status: "locked", xpReward: 150, stars: 0, order: 4, lessonCount: 5, completedLessons: 0 },
+    ],
+  },
+  // ─── ELECTIVE: Biology (5007) ──────────────────────────────────────
+  {
+    id: "bio-o",
+    name: "Biology",
+    level: "O-Level",
+    icon: "🧬",
+    color: "#10b981",
+    progress: 0.0,
+    nodes: [
+      { id: "bi1", title: "Cell Biology", description: "Cell structure, organelles, microscopy", status: "active", xpReward: 120, stars: 0, order: 1, lessonCount: 5, completedLessons: 0 },
+      { id: "bi2", title: "Nutrition", description: "Food groups, enzymes, digestion, photosynthesis", status: "locked", xpReward: 200, stars: 0, order: 2, lessonCount: 8, completedLessons: 0 },
+      { id: "bi3", title: "Transport", description: "Blood, heart, circulation, transpiration", status: "locked", xpReward: 200, stars: 0, order: 3, lessonCount: 7, completedLessons: 0 },
+      { id: "bi4", title: "Reproduction", description: "Human reproduction, plant reproduction, genetics", status: "locked", xpReward: 250, stars: 0, order: 4, lessonCount: 8, completedLessons: 0 },
+      { id: "bi5", title: "Ecology", description: "Ecosystems, food chains, conservation", status: "locked", xpReward: 200, stars: 0, order: 5, lessonCount: 6, completedLessons: 0 },
+    ],
+  },
+  // ─── ELECTIVE: Geography (2248) ────────────────────────────────────
+  {
+    id: "geo-o",
+    name: "Geography",
+    level: "O-Level",
+    icon: "🌍",
+    color: "#0ea5e9",
+    progress: 0.0,
+    nodes: [
+      { id: "ge1", title: "Map Work", description: "Scale, contours, grid references, cross-sections", status: "active", xpReward: 150, stars: 0, order: 1, lessonCount: 6, completedLessons: 0 },
+      { id: "ge2", title: "Weathering & Landforms", description: "Erosion, rivers, volcanoes, earthquakes", status: "locked", xpReward: 200, stars: 0, order: 2, lessonCount: 7, completedLessons: 0 },
+      { id: "ge3", title: "Weather & Climate", description: "Atmosphere, rainfall, climate zones of Zimbabwe", status: "locked", xpReward: 200, stars: 0, order: 3, lessonCount: 6, completedLessons: 0 },
+      { id: "ge4", title: "Population & Settlement", description: "Migration, urbanisation, rural-urban contrasts", status: "locked", xpReward: 200, stars: 0, order: 4, lessonCount: 6, completedLessons: 0 },
+    ],
+  },
+  // ─── ELECTIVE: Accounting (7112) ───────────────────────────────────
+  {
+    id: "acc-o",
+    name: "Accounting",
+    level: "O-Level",
+    icon: "📊",
+    color: "#f97316",
+    progress: 0.0,
+    nodes: [
+      { id: "ac1", title: "Double Entry", description: "Debits, credits, T-accounts, trial balance", status: "active", xpReward: 120, stars: 0, order: 1, lessonCount: 6, completedLessons: 0 },
+      { id: "ac2", title: "Final Accounts", description: "Trading, profit & loss, balance sheet", status: "locked", xpReward: 250, stars: 0, order: 2, lessonCount: 8, completedLessons: 0 },
+      { id: "ac3", title: "Cash Book & Bank Rec", description: "Cash book, bank reconciliation statements", status: "locked", xpReward: 200, stars: 0, order: 3, lessonCount: 6, completedLessons: 0 },
     ],
   },
 ];

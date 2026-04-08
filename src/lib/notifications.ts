@@ -3,7 +3,7 @@
  * Falls back to in-app reminders if Notification API is denied.
  */
 
-const NOTIF_KEY = "ruzivo_notif_prefs";
+const NOTIF_KEY = "nhaka_notif_prefs";
 
 export interface NotificationPrefs {
   enabled: boolean;
@@ -80,7 +80,7 @@ export function showNotification(title: string, body: string): void {
     body,
     icon: "/icon-192.svg",
     badge: "/icon-192.svg",
-    tag: "ruzivo-reminder",
+    tag: "nhaka-reminder",
   });
 }
 

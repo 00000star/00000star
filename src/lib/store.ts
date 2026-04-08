@@ -1,10 +1,10 @@
 import type { User, SyncEvent } from "./types";
 
 const STORAGE_KEYS = {
-  user: "ruzivo_user",
-  events: "ruzivo_events",
-  offlineData: "ruzivo_offline",
-  onboarding: "ruzivo_onboarding",
+  user: "nhaka_user",
+  events: "nhaka_events",
+  offlineData: "nhaka_offline",
+  onboarding: "nhaka_onboarding",
 } as const;
 
 export interface OnboardingData {

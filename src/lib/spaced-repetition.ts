@@ -13,7 +13,7 @@ export interface ReviewCard {
   lastAnswer: "correct" | "incorrect";
 }
 
-const SR_KEY = "ruzivo_sr_cards";
+const SR_KEY = "nhaka_sr_cards";
 
 export function loadCards(): ReviewCard[] {
   if (typeof localStorage === "undefined") return [];

@@ -42,14 +42,14 @@ export default function LoginPage() {
         <div className="mb-8 flex flex-col items-center">
           <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-rz-primary to-rz-gold flex items-center justify-center mb-4 shadow-lg shadow-rz-primary/20">
             <span className="text-4xl font-black text-rz-bg tracking-tighter">
-              R
+              N
             </span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-rz-text">
-            Ruzivo
+            Nhaka
           </h1>
           <p className="text-sm text-rz-text-muted mt-1">
-            Master Your ZIMSEC Exams
+            Own Your ZIMSEC Success
           </p>
         </div>
 

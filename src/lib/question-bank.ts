@@ -114,4 +114,81 @@ export const extendedQuestions: Record<string, Lesson[]> = {
     { id: "he4_01", nodeId: "he4", title: "Zimbabwe Bird (2024 P1)", questionText: "The Zimbabwe Bird (Hungwe) is found on the national flag and coat of arms. Where was the original stone bird found?", options: [{ text: "Great Zimbabwe ruins" }, { text: "Victoria Falls" }, { text: "Matobo Hills" }, { text: "Chinhoyi Caves" }], correctIndex: 0, explanation: "The original soapstone birds were found in the Great Zimbabwe ruins near Masvingo. They are symbols of national identity and heritage.", xpReward: 20 },
     { id: "he4_02", nodeId: "he4", title: "National Heroes (2023 P1)", questionText: "The National Heroes Acre in Harare honours:", options: [{ text: "Those who made exceptional contributions to Zimbabwe's liberation and development" }, { text: "All Zimbabwean citizens" }, { text: "Only military personnel" }, { text: "Traditional chiefs only" }], correctIndex: 0, explanation: "The National Heroes Acre is a burial ground and monument for individuals declared national heroes for their outstanding contributions to Zimbabwe.", xpReward: 20 },
   ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // COMBINED SCIENCE (5006) — Compulsory
+  // ═══════════════════════════════════════════════════════════════════
+  cs1: [
+    { id: "cs1_01", nodeId: "cs1", title: "Cell Structure (2024 P1)", questionText: "Which organelle is responsible for energy production in the cell?", options: [{ text: "Mitochondria" }, { text: "Nucleus" }, { text: "Ribosome" }, { text: "Cell membrane" }], correctIndex: 0, explanation: "Mitochondria are the 'powerhouses' of the cell — they carry out aerobic respiration to produce ATP (energy).", xpReward: 15 },
+    { id: "cs1_02", nodeId: "cs1", title: "Plant vs Animal Cells (2023 P1)", questionText: "Which structure is found in plant cells but NOT in animal cells?", options: [{ text: "Cell wall" }, { text: "Cell membrane" }, { text: "Nucleus" }, { text: "Cytoplasm" }], correctIndex: 0, explanation: "Plant cells have a rigid cellulose cell wall outside the cell membrane. Animal cells lack this structure.", xpReward: 15 },
+    { id: "cs1_03", nodeId: "cs1", title: "Photosynthesis (2024 P2)", questionText: "What is the balanced equation for photosynthesis?", options: [{ text: "6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂" }, { text: "C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O" }, { text: "CO₂ + H₂O → CH₂O + O₂" }, { text: "6O₂ + C₆H₁₂O₆ → 6CO₂ + 6H₂O" }], correctIndex: 0, explanation: "Photosynthesis: carbon dioxide + water → glucose + oxygen, using light energy absorbed by chlorophyll.", xpReward: 20 },
+    { id: "cs1_04", nodeId: "cs1", title: "Respiration (2022 P1)", questionText: "Aerobic respiration requires:", options: [{ text: "Glucose and oxygen" }, { text: "Glucose only" }, { text: "Carbon dioxide and water" }, { text: "Light energy" }], correctIndex: 0, explanation: "Aerobic respiration: C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + energy. It needs glucose and oxygen.", xpReward: 15 },
+  ],
+  cs2: [
+    { id: "cs2_01", nodeId: "cs2", title: "Elements & Compounds (2024 P1)", questionText: "What is the difference between an element and a compound?", options: [{ text: "An element contains one type of atom; a compound contains two or more chemically bonded" }, { text: "They are the same thing" }, { text: "A compound has one atom type" }, { text: "An element has bonded atoms" }], correctIndex: 0, explanation: "An element is a pure substance made of one type of atom (e.g., Fe). A compound is two or more elements chemically bonded (e.g., H₂O).", xpReward: 15 },
+    { id: "cs2_02", nodeId: "cs2", title: "Separation (2023 P1)", questionText: "Which method separates an insoluble solid from a liquid?", options: [{ text: "Filtration" }, { text: "Evaporation" }, { text: "Distillation" }, { text: "Chromatography" }], correctIndex: 0, explanation: "Filtration separates insoluble solids from liquids — the liquid passes through filter paper, the solid residue stays behind.", xpReward: 15 },
+  ],
+  cs3: [
+    { id: "cs3_01", nodeId: "cs3", title: "Series & Parallel (2024 P1)", questionText: "In a parallel circuit, the voltage across each branch is:", options: [{ text: "The same as the supply voltage" }, { text: "Divided equally" }, { text: "Zero" }, { text: "Doubled" }], correctIndex: 0, explanation: "In parallel circuits, voltage is the same across each branch. Current divides between branches.", xpReward: 20 },
+    { id: "cs3_02", nodeId: "cs3", title: "Magnets (2022 P1)", questionText: "Like magnetic poles:", options: [{ text: "Repel each other" }, { text: "Attract each other" }, { text: "Have no effect" }, { text: "Cancel out" }], correctIndex: 0, explanation: "Like poles (N-N or S-S) repel. Unlike poles (N-S) attract. This is a fundamental law of magnetism.", xpReward: 15 },
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // ENGLISH LANGUAGE (1122) — Compulsory
+  // ═══════════════════════════════════════════════════════════════════
+  en1: [
+    { id: "en1_01", nodeId: "en1", title: "Comprehension (2024 P1)", questionText: "'The boy sprinted across the field with reckless abandon.' What does 'reckless abandon' mean?", options: [{ text: "Without care for safety or consequences" }, { text: "Very slowly and carefully" }, { text: "With great sadness" }, { text: "In an organised manner" }], correctIndex: 0, explanation: "'Reckless abandon' means acting wildly without concern for danger or consequences.", xpReward: 15 },
+    { id: "en1_02", nodeId: "en1", title: "Inference (2023 P1)", questionText: "'Maria slammed the door and threw her bag on the floor.' What can you infer about Maria's mood?", options: [{ text: "She is angry or frustrated" }, { text: "She is happy" }, { text: "She is tired" }, { text: "She is excited" }], correctIndex: 0, explanation: "Slamming and throwing are aggressive actions — they imply anger or frustration.", xpReward: 15 },
+    { id: "en1_03", nodeId: "en1", title: "Vocabulary (2022 P1)", questionText: "Choose the word closest in meaning to 'diligent':", options: [{ text: "Hardworking" }, { text: "Lazy" }, { text: "Clever" }, { text: "Wealthy" }], correctIndex: 0, explanation: "'Diligent' means showing careful and persistent effort — i.e., hardworking.", xpReward: 15 },
+  ],
+  en3: [
+    { id: "en3_01", nodeId: "en3", title: "Tenses (2024 P1)", questionText: "Choose the correct sentence:", options: [{ text: "She has been working here since 2020." }, { text: "She has been working here for 2020." }, { text: "She is been working here since 2020." }, { text: "She have been working here since 2020." }], correctIndex: 0, explanation: "Present perfect continuous: 'has been working' + 'since' (point in time). 'For' is used with duration.", xpReward: 15 },
+    { id: "en3_02", nodeId: "en3", title: "Subject-Verb Agreement (2023 P1)", questionText: "Choose the correct form: 'Neither the teacher nor the students ___ present.'", options: [{ text: "were" }, { text: "was" }, { text: "is" }, { text: "has been" }], correctIndex: 0, explanation: "With 'neither...nor', the verb agrees with the nearest subject ('students' = plural), so 'were' is correct.", xpReward: 20 },
+    { id: "en3_03", nodeId: "en3", title: "Active & Passive (2022 P1)", questionText: "Change to passive: 'The dog bit the boy.'", options: [{ text: "The boy was bitten by the dog." }, { text: "The boy is bitten by the dog." }, { text: "The boy bit the dog." }, { text: "The dog was bitten by the boy." }], correctIndex: 0, explanation: "Passive voice: object becomes subject + 'was/were' + past participle + 'by' + original subject.", xpReward: 20 },
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // SHONA (3159) — Compulsory Indigenous Language
+  // ═══════════════════════════════════════════════════════════════════
+  sh1: [
+    { id: "sh1_01", nodeId: "sh1", title: "Mhando dzeMazwi (2024 P1)", questionText: "Zita ndechii muchiShona?", options: [{ text: "Izwi rinotumidzira chinhu, munhu, kana nzvimbo" }, { text: "Izwi rinoratidza chiito" }, { text: "Izwi rinobatanidza mitsara" }, { text: "Izwi rinoratidza manzwiro" }], correctIndex: 0, explanation: "Zita (noun) izwi rinotumidzira chinhu, munhu, nzvimbo kana pfungwa — semuenzaniso: mwana, Harare, banga.", xpReward: 15 },
+    { id: "sh1_02", nodeId: "sh1", title: "Chiito (2023 P1)", questionText: "Chiito chii?", options: [{ text: "Izwi rinoratidza basa rinenge richiitwa" }, { text: "Izwi rinotumidzira munhu" }, { text: "Izwi rinoratidza nzvimbo" }, { text: "Izwi rinobatanidza mashoko" }], correctIndex: 0, explanation: "Chiito (verb) izwi rinoratidza chiito kana basa — semuenzaniso: kuenda, kudya, kuverenga.", xpReward: 15 },
+  ],
+  sh2: [
+    { id: "sh2_01", nodeId: "sh2", title: "Tsumo (2024 P1)", questionText: "'Chara chimwe hachitswanyi inda.' Tsumo iyi inorevei?", options: [{ text: "Munhu mumwe chete haagoni kuita basa guru — kubatana kunokosha" }, { text: "Usadye zvakawandisa" }, { text: "Ramba uchishanda" }, { text: "Usatye vanhu vakuru" }], correctIndex: 0, explanation: "Tsumo iyi inodzidzisa kuti munhu mumwe chete haakwanisi kuita zvinhu zvikuru — vanhu vanofanira kubatana pakushanda.", xpReward: 20 },
+    { id: "sh2_02", nodeId: "sh2", title: "Madimikira (2023 P1)", questionText: "'Akarovera pasi.' Dimikira iri rinorevei?", options: [{ text: "Akafa" }, { text: "Akawira pasi" }, { text: "Akarova munhu" }, { text: "Akamhanya" }], correctIndex: 0, explanation: "'Kurovera pasi' idimikira (idiom) rinoreva kufa — haasi kurova chinhu chaizvo.", xpReward: 20 },
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // BIOLOGY (5007) — Elective
+  // ═══════════════════════════════════════════════════════════════════
+  bi1: [
+    { id: "bi1_01", nodeId: "bi1", title: "Cell Organelles (2024 P1)", questionText: "Which organelle controls all cell activities?", options: [{ text: "Nucleus" }, { text: "Mitochondria" }, { text: "Ribosome" }, { text: "Golgi apparatus" }], correctIndex: 0, explanation: "The nucleus contains DNA and controls all cell activities — it is the 'brain' of the cell.", xpReward: 15 },
+    { id: "bi1_02", nodeId: "bi1", title: "Microscope (2023 P1)", questionText: "The magnification of a microscope is calculated by:", options: [{ text: "Eyepiece lens × Objective lens" }, { text: "Eyepiece lens + Objective lens" }, { text: "Eyepiece lens ÷ Objective lens" }, { text: "Objective lens only" }], correctIndex: 0, explanation: "Total magnification = eyepiece magnification × objective magnification. E.g., ×10 eyepiece × ×40 objective = ×400.", xpReward: 15 },
+  ],
+  bi2: [
+    { id: "bi2_01", nodeId: "bi2", title: "Enzymes (2024 P1)", questionText: "What happens to an enzyme at very high temperatures?", options: [{ text: "It is denatured — its shape changes and it stops working" }, { text: "It works faster" }, { text: "It freezes" }, { text: "Nothing changes" }], correctIndex: 0, explanation: "High temperatures break the bonds holding the enzyme's shape (denaturing). The active site changes shape and can no longer bind to the substrate.", xpReward: 20 },
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // GEOGRAPHY (2248) — Elective
+  // ═══════════════════════════════════════════════════════════════════
+  ge1: [
+    { id: "ge1_01", nodeId: "ge1", title: "Grid References (2024 P1)", questionText: "A six-figure grid reference is more precise than a four-figure reference because:", options: [{ text: "It identifies a specific point within a grid square, not just the square" }, { text: "It uses bigger numbers" }, { text: "It shows altitude" }, { text: "It measures distance" }], correctIndex: 0, explanation: "A 4-figure reference identifies a 1km² square. A 6-figure reference pinpoints a location within that square to 100m accuracy.", xpReward: 20 },
+    { id: "ge1_02", nodeId: "ge1", title: "Contour Lines (2023 P1)", questionText: "Contour lines that are close together indicate:", options: [{ text: "Steep slope" }, { text: "Flat ground" }, { text: "A river" }, { text: "A settlement" }], correctIndex: 0, explanation: "Closely spaced contours mean a big height change over a short horizontal distance — i.e., steep terrain.", xpReward: 15 },
+  ],
+  ge3: [
+    { id: "ge3_01", nodeId: "ge3", title: "Climate of Zimbabwe (2024 P2)", questionText: "Most of Zimbabwe receives rainfall between:", options: [{ text: "November and March (wet season)" }, { text: "June and August (winter)" }, { text: "April and May" }, { text: "September and October" }], correctIndex: 0, explanation: "Zimbabwe has a tropical savanna climate with a wet season from roughly November to March when the ITCZ brings moisture.", xpReward: 15 },
+  ],
+
+  // ═══════════════════════════════════════════════════════════════════
+  // ACCOUNTING (7112) — Elective
+  // ═══════════════════════════════════════════════════════════════════
+  ac1: [
+    { id: "ac1_01", nodeId: "ac1", title: "Double Entry (2024 P1)", questionText: "When a business buys goods on credit, the entries are:", options: [{ text: "Debit Purchases, Credit Creditors" }, { text: "Debit Cash, Credit Purchases" }, { text: "Debit Creditors, Credit Purchases" }, { text: "Debit Sales, Credit Cash" }], correctIndex: 0, explanation: "Buying on credit: the asset (purchases) increases (debit), and the liability (creditors) increases (credit).", xpReward: 20 },
+    { id: "ac1_02", nodeId: "ac1", title: "Trial Balance (2023 P1)", questionText: "A trial balance proves that:", options: [{ text: "Total debits equal total credits" }, { text: "All entries are correct" }, { text: "No errors exist" }, { text: "The business made a profit" }], correctIndex: 0, explanation: "A trial balance only checks that debits = credits. It cannot detect errors of omission, commission, principle, or compensating errors.", xpReward: 20 },
+  ],
+  ac2: [
+    { id: "ac2_01", nodeId: "ac2", title: "Gross Profit (2024 P1)", questionText: "Gross profit is calculated as:", options: [{ text: "Sales − Cost of Goods Sold" }, { text: "Sales − All Expenses" }, { text: "Net Profit + Expenses" }, { text: "Assets − Liabilities" }], correctIndex: 0, explanation: "Gross Profit = Sales Revenue − Cost of Goods Sold. It measures profit before operating expenses.", xpReward: 20 },
+  ],
 };

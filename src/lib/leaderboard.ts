@@ -94,7 +94,7 @@ export function generateMockLeaderboard(currentUserXP: number): LeaderboardEntry
 export function getWeeklyXPGain(): number {
   if (typeof localStorage === "undefined") return 0;
   try {
-    const raw = localStorage.getItem("ruzivo_weekly_xp");
+    const raw = localStorage.getItem("nhaka_weekly_xp");
     if (!raw) return 0;
     const data = JSON.parse(raw) as { xp: number; weekStart: string };
     const weekStart = getWeekStart();
@@ -110,7 +110,7 @@ export function addWeeklyXP(amount: number): void {
   const weekStart = getWeekStart();
   const current = getWeeklyXPGain();
   localStorage.setItem(
-    "ruzivo_weekly_xp",
+    "nhaka_weekly_xp",
     JSON.stringify({ xp: current + amount, weekStart })
   );
 }
