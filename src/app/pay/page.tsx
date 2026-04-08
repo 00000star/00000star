@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 
+import { generateReference } from "@/lib/payments";
+
 const PLANS = [
   { id: "monthly", label: "Monthly", usd: 2.99, zwl: 19435, period: "/month", popular: false },
   { id: "termly", label: "Per Term", usd: 6.99, zwl: 45435, period: "/term", popular: true },
@@ -20,32 +22,81 @@ export default function PayPage() {
   const [processing, setProcessing] = useState(false);
   const [sent, setSent] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState<string | null>(null);
+  const [payError, setPayError] = useState<string | null>(null);
+  const [innbucksLink, setInnbucksLink] = useState<string | null>(null);
+  const [gatewayMessage, setGatewayMessage] = useState<string | null>(null);
 
   const plan = PLANS.find((p) => p.id === selectedPlan)!;
   const studentName = "Tatenda";
+  const studentId = "u_001";
+
+  async function initiatePaynowMobile(method: "ecocash" | "innbucks") {
+    if (!phoneNumber.trim()) return;
+    setProcessing(true);
+    setPayError(null);
+    setPaymentStatus(null);
+    setInnbucksLink(null);
+    setGatewayMessage(null);
+
+    const reference = generateReference(studentId, plan.id);
+
+    try {
+      const res = await fetch("/api/pay/mobile", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          plan: plan.id,
+          method,
+          phone: phoneNumber,
+          studentId,
+          reference,
+        }),
+      });
+
+      const data = (await res.json()) as {
+        error?: string;
+        instructions?: string;
+        innbucks?: { deepLinkUrl?: string; authorizationCode?: string };
+      };
+
+      if (!res.ok) {
+        setPayError(data.error ?? "Payment could not be started.");
+        return;
+      }
+
+      if (data.innbucks?.deepLinkUrl) {
+        setInnbucksLink(data.innbucks.deepLinkUrl);
+      }
+
+      let hint: string;
+      if (data.instructions) {
+        hint = String(data.instructions);
+      } else if (method === "ecocash") {
+        hint =
+          "Check your phone for a USSD or wallet prompt and complete payment with your EcoCash PIN.";
+      } else if (data.innbucks?.deepLinkUrl) {
+        hint = "Tap below to open InnBucks and approve the payment.";
+      } else {
+        hint =
+          "Open the InnBucks app and approve the payment when prompted.";
+      }
+
+      setPaymentStatus(hint);
+      setGatewayMessage(hint);
+      setSent(true);
+    } catch {
+      setPayError("Network error. Check your connection and try again.");
+    } finally {
+      setProcessing(false);
+    }
+  }
 
   function handleEcoCashPay() {
-    if (!phoneNumber) return;
-    setProcessing(true);
-    setPaymentStatus("A USSD prompt has been sent to your phone. Please enter your EcoCash PIN to complete payment.");
-
-    setTimeout(() => {
-      setProcessing(false);
-      setSent(true);
-      setPaymentStatus(null);
-    }, 4000);
+    void initiatePaynowMobile("ecocash");
   }
 
   function handleInnBucksPay() {
-    if (!phoneNumber) return;
-    setProcessing(true);
-    setPaymentStatus("An authorisation code has been sent. Open InnBucks app to approve the payment.");
-
-    setTimeout(() => {
-      setProcessing(false);
-      setSent(true);
-      setPaymentStatus(null);
-    }, 4000);
+    void initiatePaynowMobile("innbucks");
   }
 
   function handleWhatsApp() {
@@ -196,6 +247,12 @@ export default function PayPage() {
             </div>
           )}
 
+          {payError && (
+            <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-3 mb-4">
+              <p className="text-xs text-red-400">{payError}</p>
+            </div>
+          )}
+
           {/* Pay button */}
           {payMethod === "whatsapp" ? (
             <button
@@ -244,6 +301,17 @@ export default function PayPage() {
               ? "Once your parent completes payment via EcoCash, your account will be upgraded automatically."
               : "Your premium access will be activated as soon as payment is confirmed. This usually takes a few seconds."}
           </p>
+          {payMethod !== "whatsapp" && gatewayMessage && (
+            <p className="text-xs text-rz-gold/90 mt-2 text-left">{gatewayMessage}</p>
+          )}
+          {payMethod === "innbucks" && innbucksLink && (
+            <a
+              href={innbucksLink}
+              className="mt-3 inline-block w-full rounded-xl bg-blue-500 py-2.5 text-sm font-semibold text-white text-center hover:bg-blue-600 active:scale-[0.98] transition-all"
+            >
+              Open InnBucks
+            </a>
+          )}
           <Link
             href="/dashboard"
             className="mt-4 inline-block px-6 py-2.5 rounded-xl bg-rz-primary text-sm font-semibold text-rz-bg hover:bg-rz-primary-dim active:scale-[0.98] transition-all"

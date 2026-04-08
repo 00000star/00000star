@@ -11,6 +11,15 @@
 
 export type PaymentMethod = "ecocash" | "innbucks" | "onemoney" | "vmc";
 
+/** USD amounts for Paynow line items (server validates against these). */
+export const PLAN_USD = {
+  monthly: 2.99,
+  termly: 6.99,
+  yearly: 14.99,
+} as const;
+
+export type PlanId = keyof typeof PLAN_USD;
+
 export interface PaymentRequest {
   plan: "monthly" | "termly" | "yearly";
   amount: number;
