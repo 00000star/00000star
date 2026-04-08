@@ -1,27 +1,52 @@
-# Ruzivo
+# Nhaka
 
 **Gamified, offline-first learning platform for ZIMSEC O-Level & A-Level students.**
 
-*Ruzivo* (Shona: "knowledge") is a mobile-first Progressive Web App designed for the Zimbabwean education market. It transforms static past papers into interactive micro-lessons, timed mock exams, and AI-graded essays — all optimized for low-end Android devices, intermittent connectivity, and battery constraints.
+*Nhaka* (Shona: "heritage/inheritance") is a mobile-first Progressive Web App designed for the Zimbabwean education market, aligned to the Heritage-Based Education 2024–2030 Curriculum. It transforms ZIMSEC past papers into interactive micro-lessons, timed mock exams, and AI-graded essays — optimized for low-end Android devices, intermittent connectivity, and battery constraints.
 
 ## Features
 
-- **Adaptive Dashboard** — Daily streaks, XP tracking, and progress rings with O-Level/A-Level focus modes
-- **Gamified Progression Tree** — Duolingo-style learning paths with locked/active/completed nodes
-- **Interactive Micro-Lessons** — LaTeX-rendered STEM questions with instant feedback and XP rewards
-- **Timed Mock Exams** — Full ZIMSEC exam simulations with countdown timer and flag-for-review
-- **AI Essay Grader** — Structural feedback for Humanities essays (History, Divinity, English)
-- **SBP Portfolio Tracker** — Kanban-style project management for the mandatory 20% continuous assessment
-- **Offline Data Manager** — Module-level downloads with storage metering and CRDT-based event sync
-- **WhatsApp-to-Parent Monetization** — Student requests upgrade, parent pays via EcoCash, webhook unlocks premium
+- **11 ZIMSEC subjects** — all 5 compulsory + 6 popular electives
+- **Spaced Repetition** — SM-2 algorithm tracks wrong answers and resurfaces them at expanding intervals
+- **Onboarding Flow** — subject selection, daily goal, exam countdown, notification setup
+- **Leaderboards** — 4-tier league system (Bronze → Diamond) with school-based rankings
+- **Push Notifications** — daily reminders, streak-at-risk alerts
+- **KaTeX LaTeX Rendering** — crisp mathematical typography
+- **Timed Mock Exams** — full ZIMSEC Paper 1 simulation
+- **AI Essay Grader** — structural feedback for Humanities essays
+- **SBP Portfolio Tracker** — Kanban board for School-Based Projects
+- **Offline Data Manager** — module downloads with CRDT event sync
+- **Payment Integration** — EcoCash, InnBucks, WhatsApp-to-Parent via Paynow
 
-## Architecture
+## Subjects
 
-- **Next.js 16** with App Router and TypeScript
-- **Tailwind CSS v4** with custom AMOLED-friendly dark theme
-- **Offline-first** with event sourcing and local storage (CRDT-ready)
-- **Device-aware** graceful degradation (RAM/battery detection)
-- **PWA manifest** for installability on Android devices
+### Compulsory (every O-Level student)
+| Subject | Code | Topics |
+|---------|------|--------|
+| Mathematics | 4004 | 12 nodes: Arithmetic → Vectors |
+| English Language | 1122 | 5 nodes: Comprehension → Report Writing |
+| Shona | 3159 | 4 nodes: Grammar → Comprehension |
+| Combined Science | 5006 | 4 nodes: Living Things → Environment |
+| Heritage Studies | 6081 | 5 nodes: Socialisation → Constitution |
+
+### Electives
+| Subject | Code | Topics |
+|---------|------|--------|
+| Physics | 5055 | 6 nodes: Measurement → Nuclear |
+| Chemistry | 5071 | 6 nodes: Atomic Structure → Organic |
+| Biology | 5007 | 5 nodes: Cell Biology → Ecology |
+| History | 2167 | 4 nodes: Pre-Colonial → Regional |
+| Geography | 2248 | 4 nodes: Map Work → Population |
+| Accounting | 7112 | 3 nodes: Double Entry → Cash Book |
+
+## Monetization
+
+Payments via **Paynow Zimbabwe** (EcoCash, InnBucks, OneMoney, Visa/MC):
+- Monthly: $2.99
+- Per Term: $6.99
+- Full Year: $14.99
+
+Merchant EcoCash: `0785378845`
 
 ## Getting Started
 
@@ -32,28 +57,14 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in a mobile viewport.
 
-## Project Structure
+## Tech Stack
 
-```
-src/
-  app/
-    page.tsx              # Login/Splash screen
-    dashboard/page.tsx    # Daily dashboard with streak & progress
-    path/[subject]/       # Subject progression tree
-    lesson/[nodeId]/      # Interactive micro-lesson engine
-    exam/[examId]/        # Timed mock exam interface
-    essay/page.tsx        # LLM essay grader
-    sbp/page.tsx          # SBP portfolio builder
-    offline/page.tsx      # Offline data & sync manager
-    pay/page.tsx          # WhatsApp billing flow
-  components/ui/          # Shared UI components
-  lib/
-    types.ts              # TypeScript type definitions
-    mock-data.ts          # Seed data for all modules
-    device.ts             # Hardware profiling (RAM, battery)
-    store.ts              # Local storage & event sourcing
-```
+- Next.js 16 (App Router) + TypeScript
+- Tailwind CSS v4 (AMOLED dark theme)
+- KaTeX for LaTeX rendering
+- Paynow Node.js SDK for payments
+- PWA with service worker
 
 ## Name
 
-**Ruzivo** — from the Shona word for "knowledge." Authentic to Zimbabwe, easy to pronounce, and evocative of the platform's mission to democratize access to quality exam preparation.
+**Nhaka** — Shona for "heritage" or "inheritance." Connects directly to Zimbabwe's Heritage-Based Education Curriculum and represents the knowledge students inherit and build upon.

@@ -1,10 +1,41 @@
 import type { User, SyncEvent } from "./types";
 
 const STORAGE_KEYS = {
-  user: "ruzivo_user",
-  events: "ruzivo_events",
-  offlineData: "ruzivo_offline",
+  user: "nhaka_user",
+  events: "nhaka_events",
+  offlineData: "nhaka_offline",
+  onboarding: "nhaka_onboarding",
 } as const;
+
+export interface OnboardingData {
+  completed: boolean;
+  name: string;
+  level: "O-Level" | "A-Level";
+  subjects: string[];
+  examDate: string;
+  dailyGoal: number;
+  reminderTime: string;
+}
+
+export function saveOnboarding(data: OnboardingData): void {
+  if (typeof localStorage === "undefined") return;
+  localStorage.setItem(STORAGE_KEYS.onboarding, JSON.stringify(data));
+}
+
+export function loadOnboarding(): OnboardingData | null {
+  if (typeof localStorage === "undefined") return null;
+  const raw = localStorage.getItem(STORAGE_KEYS.onboarding);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw) as OnboardingData;
+  } catch {
+    return null;
+  }
+}
+
+export function isOnboarded(): boolean {
+  return loadOnboarding()?.completed === true;
+}
 
 export function saveUser(user: User): void {
   if (typeof localStorage === "undefined") return;

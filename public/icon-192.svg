@@ -7,5 +7,5 @@
   </defs>
   <rect width="192" height="192" rx="38" fill="#0a1a0f"/>
   <rect x="16" y="16" width="160" height="160" rx="30" fill="url(#g)"/>
-  <text x="96" y="116" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="96" font-weight="900" fill="#0a1a0f">R</text>
+  <text x="96" y="116" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-size="96" font-weight="900" fill="#0a1a0f">N</text>
 </svg>
