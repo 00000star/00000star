@@ -5,12 +5,22 @@ import { mockUser, mockSubjects } from "@/lib/mock-data";
 import { BottomNav } from "@/components/ui/bottom-nav";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { XPBadge } from "@/components/ui/xp-badge";
+import { useDeviceProfile } from "@/hooks/use-device";
+import { useServiceWorker } from "@/hooks/use-service-worker";
+import { saveUser } from "@/lib/store";
+import { useEffect } from "react";
 
 export default function DashboardPage() {
   const user = mockUser;
   const dailyGoal = 0.6;
   const lessonsToday = 3;
   const goalTarget = 5;
+  const { lowFidelity } = useDeviceProfile();
+  useServiceWorker();
+
+  useEffect(() => {
+    saveUser(user);
+  }, [user]);
 
   return (
     <main className="min-h-dvh bg-rz-bg pb-24">
@@ -31,6 +41,15 @@ export default function DashboardPage() {
       </header>
 
       <div className="px-5 space-y-4">
+        {lowFidelity && (
+          <div className="rounded-xl bg-rz-gold/10 border border-rz-gold/30 p-3 flex items-center gap-2 animate-fade-in">
+            <span className="text-sm">⚡</span>
+            <p className="text-xs text-rz-gold">
+              Low-fidelity mode — animations reduced to save battery.
+            </p>
+          </div>
+        )}
+
         {/* Streak + Daily Goal Row */}
         <div className="grid grid-cols-2 gap-3 animate-slide-up">
           {/* Streak */}
@@ -61,7 +80,7 @@ export default function DashboardPage() {
             Continue Learning
           </h2>
           {mockSubjects
-            .filter((s) => s.progress > 0)
+            .filter((s) => s.progress > 0 || s.nodes.some((n) => n.status === "active"))
             .map((subject) => {
               const activeNode = subject.nodes.find(
                 (n) => n.status === "active"

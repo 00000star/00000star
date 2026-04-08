@@ -35,17 +35,16 @@ export default function PayPage() {
   const [sent, setSent] = useState(false);
 
   const plan = PLANS.find((p) => p.id === selectedPlan)!;
+  const studentName = "Tatenda";
 
   function handleWhatsApp() {
     const message = encodeURIComponent(
-      `Hi! I'm ${mockStudentName}'s parent. I'd like to upgrade their Ruzivo account to the ${plan.label} plan ($${plan.usd} USD). Here is my payment link: https://pay.ruzivo.co.zw/checkout/${plan.id}?student=u_001`
+      `Hi! I'm ${studentName}'s parent. I'd like to upgrade their Ruzivo account to the ${plan.label} plan ($${plan.usd} USD). Here is my payment link: https://pay.ruzivo.co.zw/checkout/${plan.id}?student=u_001`
     );
     const url = `https://wa.me/?text=${message}`;
     window.open(url, "_blank");
     setSent(true);
   }
-
-  const mockStudentName = "Tatenda";
 
   return (
     <main className="min-h-dvh bg-rz-bg px-5 py-6">

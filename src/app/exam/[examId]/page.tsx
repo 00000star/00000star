@@ -1,11 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { use, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { mockExam } from "@/lib/mock-data";
+import { Latex } from "@/components/ui/latex";
+import { appendEvent } from "@/lib/store";
 
-export default function ExamPage() {
-  const exam = mockExam;
+export default function ExamPage({
+  params,
+}: {
+  params: Promise<{ examId: string }>;
+}) {
+  const { examId } = use(params);
+  const exam = examId === mockExam.id ? mockExam : mockExam;
+
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [flagged, setFlagged] = useState<Set<string>>(new Set());
@@ -48,6 +56,14 @@ export default function ExamPage() {
       if (next.has(question.id)) next.delete(question.id);
       else next.add(question.id);
       return next;
+    });
+  }
+
+  function handleSubmit() {
+    setSubmitted(true);
+    appendEvent({
+      type: "exam_submitted",
+      payload: { examId, answers, flagged: Array.from(flagged) },
     });
   }
 
@@ -131,10 +147,8 @@ export default function ExamPage() {
           </p>
 
           {question.latex && (
-            <div className="my-4 p-4 rounded-xl bg-rz-surface border border-rz-border">
-              <p className="text-lg font-mono text-center text-rz-text">
-                {question.latex}
-              </p>
+            <div className="my-4 p-4 rounded-xl bg-rz-surface border border-rz-border flex justify-center">
+              <Latex math={question.latex} display className="text-lg text-rz-text" />
             </div>
           )}
 
@@ -215,7 +229,7 @@ export default function ExamPage() {
           </button>
         ) : (
           <button
-            onClick={() => setSubmitted(true)}
+            onClick={handleSubmit}
             className="flex-1 rounded-xl bg-rz-gold py-3 text-sm font-semibold text-rz-bg hover:bg-rz-gold-dim active:scale-[0.98] transition-all"
           >
             Submit

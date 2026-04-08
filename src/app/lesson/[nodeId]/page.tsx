@@ -1,36 +1,65 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import Link from "next/link";
-import { mockLesson } from "@/lib/mock-data";
+import { mockLessons } from "@/lib/mock-data";
+import { Latex } from "@/components/ui/latex";
+import { appendEvent } from "@/lib/store";
 
-export default function LessonPage() {
-  const lesson = mockLesson;
+export default function LessonPage({
+  params,
+}: {
+  params: Promise<{ nodeId: string }>;
+}) {
+  const { nodeId } = use(params);
+  const lessons = mockLessons[nodeId] ?? mockLessons["n3"];
+  const lesson = lessons[0];
+
   const [selected, setSelected] = useState<number | null>(null);
   const [checked, setChecked] = useState(false);
   const [questionIdx, setQuestionIdx] = useState(0);
-  const totalQuestions = 5;
+  const totalQuestions = lessons.length;
   const progress = (questionIdx + 1) / totalQuestions;
 
-  const isCorrect = selected === lesson.correctIndex;
+  const currentLesson = lessons[questionIdx] ?? lesson;
+  const isCorrect = selected === currentLesson.correctIndex;
 
   function handleCheck() {
     if (selected === null) return;
     setChecked(true);
+    appendEvent({
+      type: "lesson_answered",
+      payload: {
+        nodeId,
+        lessonId: currentLesson.id,
+        selected,
+        correct: selected === currentLesson.correctIndex,
+      },
+    });
   }
 
   function handleNext() {
     setSelected(null);
     setChecked(false);
-    setQuestionIdx((q) => Math.min(q + 1, totalQuestions - 1));
+    if (questionIdx < totalQuestions - 1) {
+      setQuestionIdx((q) => q + 1);
+    }
   }
+
+  const subjectId = nodeId.startsWith("p")
+    ? "phys-o"
+    : nodeId.startsWith("h")
+    ? "hist-o"
+    : nodeId.startsWith("c")
+    ? "chem-o"
+    : "math-o";
 
   return (
     <main className="min-h-dvh bg-rz-bg flex flex-col">
       {/* Top Bar */}
       <header className="px-5 pt-4 pb-2 flex items-center gap-3">
         <Link
-          href="/dashboard"
+          href={`/path/${subjectId}`}
           className="w-9 h-9 rounded-full bg-rz-surface border border-rz-border flex items-center justify-center text-rz-text-muted"
         >
           <svg
@@ -59,24 +88,24 @@ export default function LessonPage() {
       {/* Question Area */}
       <div className="flex-1 px-5 py-6 flex flex-col">
         <div className="animate-slide-up">
-          <p className="text-sm text-rz-text-muted mb-2">{lesson.title}</p>
+          <p className="text-sm text-rz-text-muted mb-2">
+            {currentLesson.title}
+          </p>
           <h2 className="text-lg font-semibold text-rz-text mb-1">
-            {lesson.questionText}
+            {currentLesson.questionText}
           </h2>
-          {lesson.questionLatex && (
-            <div className="my-4 p-4 rounded-xl bg-rz-surface border border-rz-border">
-              <p className="text-xl font-mono text-center text-rz-text tracking-wide">
-                {lesson.questionLatex}
-              </p>
+          {currentLesson.questionLatex && (
+            <div className="my-4 p-4 rounded-xl bg-rz-surface border border-rz-border flex justify-center">
+              <Latex math={currentLesson.questionLatex} display className="text-xl text-rz-text" />
             </div>
           )}
         </div>
 
         {/* Options */}
         <div className="mt-4 space-y-3 flex-1">
-          {lesson.options.map((option, idx) => {
+          {currentLesson.options.map((option, idx) => {
             let optionStyle = "border-rz-border bg-rz-surface";
-            if (checked && idx === lesson.correctIndex) {
+            if (checked && idx === currentLesson.correctIndex) {
               optionStyle = "border-green-500 bg-green-500/10";
             } else if (checked && idx === selected && !isCorrect) {
               optionStyle = "border-rz-danger bg-rz-danger/10";
@@ -108,7 +137,11 @@ export default function LessonPage() {
                         : "text-rz-text-muted"
                     }`}
                   >
-                    {option.text}
+                    {option.latex ? (
+                      <Latex math={option.latex} />
+                    ) : (
+                      option.text
+                    )}
                   </span>
                 </div>
               </button>
@@ -134,10 +167,14 @@ export default function LessonPage() {
                   isCorrect ? "text-green-400" : "text-rz-danger"
                 }`}
               >
-                {isCorrect ? "Correct! +25 XP" : "Not quite!"}
+                {isCorrect
+                  ? `Correct! +${currentLesson.xpReward} XP`
+                  : "Not quite!"}
               </span>
             </div>
-            <p className="text-xs text-rz-text-muted">{lesson.explanation}</p>
+            <p className="text-xs text-rz-text-muted">
+              {currentLesson.explanation}
+            </p>
           </div>
         )}
       </div>
@@ -154,7 +191,11 @@ export default function LessonPage() {
           </button>
         ) : (
           <button
-            onClick={handleNext}
+            onClick={
+              questionIdx < totalQuestions - 1
+                ? handleNext
+                : () => window.location.assign(`/path/${subjectId}`)
+            }
             className="w-full rounded-xl bg-rz-gold py-3.5 font-semibold text-rz-bg text-base hover:bg-rz-gold-dim active:scale-[0.98] transition-all"
           >
             {questionIdx < totalQuestions - 1 ? "Continue" : "Finish Lesson"}

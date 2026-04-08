@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
-  { label: "Home", href: "/dashboard", icon: HomeIcon },
-  { label: "Path", href: "/path/math-o", icon: PathIcon },
-  { label: "Exams", href: "/exam/exam_math_2024_p1", icon: ExamIcon },
-  { label: "SBP", href: "/sbp", icon: SBPIcon },
-  { label: "Profile", href: "/offline", icon: ProfileIcon },
+  { label: "Home", href: "/dashboard", matchPrefix: "/dashboard", icon: HomeIcon },
+  { label: "Path", href: "/path/math-o", matchPrefix: "/path", icon: PathIcon },
+  { label: "Exams", href: "/exam/exam_math_2024_p1", matchPrefix: "/exam", icon: ExamIcon },
+  { label: "SBP", href: "/sbp", matchPrefix: "/sbp", icon: SBPIcon },
+  { label: "Storage", href: "/offline", matchPrefix: "/offline", icon: StorageIcon },
 ] as const;
 
 export function BottomNav() {
@@ -18,11 +18,10 @@ export function BottomNav() {
     <nav className="fixed bottom-0 inset-x-0 z-50 bg-rz-surface/95 backdrop-blur-md border-t border-rz-border safe-area-bottom">
       <div className="flex items-center justify-around max-w-lg mx-auto h-16">
         {NAV_ITEMS.map((item) => {
-          const active =
-            pathname === item.href || pathname.startsWith(item.href + "/");
+          const active = pathname.startsWith(item.matchPrefix);
           return (
             <Link
-              key={item.href}
+              key={item.matchPrefix}
               href={item.href}
               className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors ${
                 active
@@ -119,7 +118,7 @@ function SBPIcon({ active }: { active: boolean }) {
   );
 }
 
-function ProfileIcon({ active }: { active: boolean }) {
+function StorageIcon({ active }: { active: boolean }) {
   return (
     <svg
       width="22"
@@ -131,8 +130,9 @@ function ProfileIcon({ active }: { active: boolean }) {
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
+      <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+      <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+      <line x1="12" y1="22.08" x2="12" y2="12" />
     </svg>
   );
 }

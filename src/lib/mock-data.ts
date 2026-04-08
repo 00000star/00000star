@@ -212,22 +212,157 @@ export const mockSubjects: Subject[] = [
   },
 ];
 
-export const mockLesson: Lesson = {
-  id: "l_q3_01",
-  nodeId: "n3",
-  title: "Solving by Factoring",
-  questionText: "Solve for x:",
-  questionLatex: "x^2 + 5x + 6 = 0",
-  options: [
-    { text: "x = -2 or x = -3", latex: "x = -2 \\text{ or } x = -3" },
-    { text: "x = 2 or x = 3", latex: "x = 2 \\text{ or } x = 3" },
-    { text: "x = -1 or x = -6", latex: "x = -1 \\text{ or } x = -6" },
-    { text: "x = 1 or x = 6", latex: "x = 1 \\text{ or } x = 6" },
+export const mockLessons: Record<string, Lesson[]> = {
+  n3: [
+    {
+      id: "l_q3_01",
+      nodeId: "n3",
+      title: "Solving by Factoring",
+      questionText: "Solve for x:",
+      questionLatex: "x^2 + 5x + 6 = 0",
+      options: [
+        { text: "x = -2 or x = -3", latex: "x = -2 \\text{ or } x = -3" },
+        { text: "x = 2 or x = 3", latex: "x = 2 \\text{ or } x = 3" },
+        { text: "x = -1 or x = -6", latex: "x = -1 \\text{ or } x = -6" },
+        { text: "x = 1 or x = 6", latex: "x = 1 \\text{ or } x = 6" },
+      ],
+      correctIndex: 0,
+      explanation:
+        "Factor the quadratic: (x + 2)(x + 3) = 0. Setting each factor to zero gives x = -2 or x = -3.",
+      xpReward: 25,
+    },
+    {
+      id: "l_q3_02",
+      nodeId: "n3",
+      title: "Quadratic Formula",
+      questionText: "Use the quadratic formula to solve:",
+      questionLatex: "2x^2 - 7x + 3 = 0",
+      options: [
+        { text: "x = 3 or x = 1/2", latex: "x = 3 \\text{ or } x = \\frac{1}{2}" },
+        { text: "x = -3 or x = -1/2", latex: "x = -3 \\text{ or } x = -\\frac{1}{2}" },
+        { text: "x = 7 or x = 3", latex: "x = 7 \\text{ or } x = 3" },
+        { text: "x = 1 or x = 3/2", latex: "x = 1 \\text{ or } x = \\frac{3}{2}" },
+      ],
+      correctIndex: 0,
+      explanation:
+        "Using the quadratic formula x = (-b ± √(b²-4ac)) / 2a with a=2, b=-7, c=3 gives x = (7 ± 5) / 4, so x = 3 or x = 1/2.",
+      xpReward: 30,
+    },
+    {
+      id: "l_q3_03",
+      nodeId: "n3",
+      title: "Completing the Square",
+      questionText: "Express in the form (x + a)² + b:",
+      questionLatex: "x^2 + 6x + 2",
+      options: [
+        { text: "(x + 3)² - 7", latex: "(x + 3)^2 - 7" },
+        { text: "(x + 3)² + 7", latex: "(x + 3)^2 + 7" },
+        { text: "(x + 6)² - 34", latex: "(x + 6)^2 - 34" },
+        { text: "(x + 2)² - 2", latex: "(x + 2)^2 - 2" },
+      ],
+      correctIndex: 0,
+      explanation:
+        "Half of 6 is 3, so (x + 3)² = x² + 6x + 9. Then x² + 6x + 2 = (x + 3)² - 9 + 2 = (x + 3)² - 7.",
+      xpReward: 30,
+    },
   ],
-  correctIndex: 0,
-  explanation:
-    "Factor the quadratic: (x + 2)(x + 3) = 0. Setting each factor to zero gives x = -2 or x = -3.",
-  xpReward: 25,
+  p2: [
+    {
+      id: "l_p2_01",
+      nodeId: "p2",
+      title: "Newton's Second Law",
+      questionText: "A 5 kg object accelerates at 3 m/s². What is the net force?",
+      options: [
+        { text: "15 N" },
+        { text: "8 N" },
+        { text: "1.67 N" },
+        { text: "150 N" },
+      ],
+      correctIndex: 0,
+      explanation: "F = ma = 5 × 3 = 15 N.",
+      xpReward: 20,
+    },
+    {
+      id: "l_p2_02",
+      nodeId: "p2",
+      title: "Kinetic Energy",
+      questionText: "Calculate the kinetic energy:",
+      questionLatex: "E_k = \\frac{1}{2}mv^2, \\quad m = 4\\text{ kg}, \\quad v = 6\\text{ m/s}",
+      options: [
+        { text: "72 J" },
+        { text: "12 J" },
+        { text: "48 J" },
+        { text: "144 J" },
+      ],
+      correctIndex: 0,
+      explanation: "Eₖ = ½mv² = ½ × 4 × 36 = 72 J.",
+      xpReward: 25,
+    },
+  ],
+  h2: [
+    {
+      id: "l_h2_01",
+      nodeId: "h2",
+      title: "The BSAC",
+      questionText: "In what year was the British South Africa Company (BSAC) granted a royal charter?",
+      options: [
+        { text: "1889" },
+        { text: "1890" },
+        { text: "1895" },
+        { text: "1880" },
+      ],
+      correctIndex: 0,
+      explanation: "The BSAC was granted a royal charter by Queen Victoria in October 1889.",
+      xpReward: 20,
+    },
+    {
+      id: "l_h2_02",
+      nodeId: "h2",
+      title: "The Pioneer Column",
+      questionText: "What was the Pioneer Column?",
+      options: [
+        { text: "A group of settlers who occupied Mashonaland in 1890" },
+        { text: "A military regiment in the Anglo-Boer War" },
+        { text: "A newspaper founded by Cecil Rhodes" },
+        { text: "A trade route through Matabeleland" },
+      ],
+      correctIndex: 0,
+      explanation: "The Pioneer Column was a group of settlers recruited by the BSAC who marched into Mashonaland and founded Fort Salisbury (Harare) in September 1890.",
+      xpReward: 20,
+    },
+  ],
+  c1: [
+    {
+      id: "l_c1_01",
+      nodeId: "c1",
+      title: "Atomic Number",
+      questionText: "What does the atomic number of an element represent?",
+      options: [
+        { text: "The number of protons in the nucleus" },
+        { text: "The total number of protons and neutrons" },
+        { text: "The number of electrons in the outer shell" },
+        { text: "The mass of the atom in grams" },
+      ],
+      correctIndex: 0,
+      explanation: "The atomic number (Z) is the number of protons in the nucleus. It defines the element.",
+      xpReward: 15,
+    },
+    {
+      id: "l_c1_02",
+      nodeId: "c1",
+      title: "Isotopes",
+      questionText: "Isotopes of an element have the same number of _____ but different numbers of _____.",
+      options: [
+        { text: "protons; neutrons" },
+        { text: "neutrons; protons" },
+        { text: "electrons; protons" },
+        { text: "protons; electrons" },
+      ],
+      correctIndex: 0,
+      explanation: "Isotopes share the same atomic number (protons) but have different mass numbers due to different numbers of neutrons.",
+      xpReward: 15,
+    },
+  ],
 };
 
 export const mockExam: MockExam = {
