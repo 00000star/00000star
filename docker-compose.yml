@@ -1,0 +1,14 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: nhaka
+      POSTGRES_PASSWORD: nhaka_dev
+      POSTGRES_DB: nhaka
+    ports:
+      - "5432:5432"
+    volumes:
+      - nhaka_pg:/var/lib/postgresql/data
+
+volumes:
+  nhaka_pg:

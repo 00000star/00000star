@@ -1,9 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-
-import { generateReference } from "@/lib/payments";
 
 const PLANS = [
   { id: "monthly", label: "Monthly", usd: 2.99, zwl: 19435, period: "/month", popular: false },
@@ -25,10 +23,38 @@ export default function PayPage() {
   const [payError, setPayError] = useState<string | null>(null);
   const [innbucksLink, setInnbucksLink] = useState<string | null>(null);
   const [gatewayMessage, setGatewayMessage] = useState<string | null>(null);
+  const [studentName, setStudentName] = useState("Student");
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const plan = PLANS.find((p) => p.id === selectedPlan)!;
-  const studentName = "Tatenda";
-  const studentId = "u_001";
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        if (!res.ok || cancelled) return;
+        const data = (await res.json()) as {
+          user?: { name?: string; onboarding?: { name?: string } | null };
+        };
+        const n =
+          data.user?.onboarding?.name?.trim() ||
+          data.user?.name?.trim();
+        if (n) setStudentName(n);
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
 
   async function initiatePaynowMobile(method: "ecocash" | "innbucks") {
     if (!phoneNumber.trim()) return;
@@ -38,23 +64,21 @@ export default function PayPage() {
     setInnbucksLink(null);
     setGatewayMessage(null);
 
-    const reference = generateReference(studentId, plan.id);
-
     try {
       const res = await fetch("/api/pay/mobile", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
           plan: plan.id,
           method,
           phone: phoneNumber,
-          studentId,
-          reference,
         }),
       });
 
       const data = (await res.json()) as {
         error?: string;
+        reference?: string;
         instructions?: string;
         innbucks?: { deepLinkUrl?: string; authorizationCode?: string };
       };
@@ -84,6 +108,27 @@ export default function PayPage() {
       setPaymentStatus(hint);
       setGatewayMessage(hint);
       setSent(true);
+
+      if (data.reference && pollRef.current) clearInterval(pollRef.current);
+      if (data.reference) {
+        pollRef.current = setInterval(async () => {
+          try {
+            const vr = await fetch("/api/pay/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              credentials: "include",
+              body: JSON.stringify({ reference: data.reference }),
+            });
+            const vj = (await vr.json()) as { status?: string };
+            if (vj.status === "paid") {
+              if (pollRef.current) clearInterval(pollRef.current);
+              setGatewayMessage("Payment confirmed. Premium is now active.");
+            }
+          } catch {
+            /* ignore */
+          }
+        }, 5000);
+      }
     } catch {
       setPayError("Network error. Check your connection and try again.");
     } finally {

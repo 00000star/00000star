@@ -1,12 +1,19 @@
 import { NextResponse } from "next/server";
 
+import {
+  createPendingPaymentOrder,
+  markPaymentOrderFailed,
+  setPaymentOrderPollUrl,
+} from "@/lib/payment-orders";
 import { initiateMobilePayment } from "@/lib/paynow-server";
+import { clientIp, rateLimit } from "@/lib/rate-limit";
 import {
   PLAN_USD,
   type PlanId,
   generateReference,
   type PaymentMethod,
 } from "@/lib/payments";
+import { getSessionFromCookies } from "@/lib/session";
 
 const ALLOWED_METHODS: PaymentMethod[] = ["ecocash", "innbucks"];
 
@@ -15,6 +22,27 @@ function normalizePhone(raw: string): string {
 }
 
 export async function POST(request: Request) {
+  const session = await getSessionFromCookies();
+  if (!session) {
+    return NextResponse.json({ error: "Sign in required." }, { status: 401 });
+  }
+
+  const ip = clientIp(request);
+  const rlIp = rateLimit(`paymob:${ip}`, 20, 60 * 60 * 1000);
+  if (!rlIp.ok) {
+    return NextResponse.json(
+      { error: "Too many payment attempts. Try again later." },
+      { status: 429, headers: { "Retry-After": String(rlIp.retryAfterSec) } }
+    );
+  }
+  const rlUser = rateLimit(`paymob:user:${session.sub}`, 15, 60 * 60 * 1000);
+  if (!rlUser.ok) {
+    return NextResponse.json(
+      { error: "Too many payment attempts. Try again later." },
+      { status: 429, headers: { "Retry-After": String(rlUser.retryAfterSec) } }
+    );
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -26,12 +54,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid request." }, { status: 400 });
   }
 
-  const { plan, method, phone, studentId, reference: clientRef } = body as {
+  const { plan, method, phone } = body as {
     plan?: string;
     method?: string;
     phone?: string;
-    studentId?: string;
-    reference?: string;
   };
 
   if (!plan || !(plan in PLAN_USD)) {
@@ -51,30 +77,55 @@ export async function POST(request: Request) {
   }
 
   const amountUsd = PLAN_USD[plan as PlanId];
-  const sid = (studentId && String(studentId).trim()) || "guest";
-  const reference =
-    clientRef && String(clientRef).trim().length > 0
-      ? String(clientRef).trim().slice(0, 120)
-      : generateReference(sid, plan);
+  const reference = generateReference(session.sub, plan);
 
   try {
-    const result = await initiateMobilePayment({
-      reference,
-      amountUsd,
-      phone: phoneNorm,
-      method: method as "ecocash" | "innbucks",
-    });
+    try {
+      await createPendingPaymentOrder(
+        session.sub,
+        reference,
+        plan as PlanId,
+        amountUsd
+      );
+    } catch (dup) {
+      const code =
+        dup && typeof dup === "object" && "code" in dup
+          ? String((dup as { code: string }).code)
+          : "";
+      if (code === "23505") {
+        return NextResponse.json(
+          { error: "Duplicate payment request. Wait a moment and try again." },
+          { status: 409 }
+        );
+      }
+      throw dup;
+    }
+
+    let result;
+    try {
+      result = await initiateMobilePayment({
+        reference,
+        amountUsd,
+        phone: phoneNorm,
+        method: method as "ecocash" | "innbucks",
+      });
+    } catch (initErr) {
+      await markPaymentOrderFailed(reference);
+      throw initErr;
+    }
 
     if (!result.success) {
+      await markPaymentOrderFailed(reference);
       return NextResponse.json(
         { error: result.error ?? "Payment failed." },
         { status: 502 }
       );
     }
 
+    await setPaymentOrderPollUrl(reference, result.pollUrl ?? null);
+
     return NextResponse.json({
       reference,
-      pollUrl: result.pollUrl,
       instructions: result.instructions,
       redirectUrl: result.redirectUrl,
       innbucks: result.innbucks,
@@ -84,13 +135,16 @@ export async function POST(request: Request) {
     const missingCreds =
       message.includes("PAYNOW_INTEGRATION_ID") ||
       message.includes("PAYNOW_INTEGRATION_KEY");
+    const missingDb = message.includes("DATABASE_URL");
     return NextResponse.json(
       {
         error: missingCreds
           ? "Payments are not configured on this server."
-          : message,
+          : missingDb
+            ? "Payment records require a database."
+            : message,
       },
-      { status: missingCreds ? 503 : 500 }
+      { status: missingCreds || missingDb ? 503 : 500 }
     );
   }
 }

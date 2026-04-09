@@ -6,22 +6,27 @@ import { BottomNav } from "@/components/ui/bottom-nav";
 import { ProgressRing } from "@/components/ui/progress-ring";
 import { XPBadge } from "@/components/ui/xp-badge";
 import { useDeviceProfile } from "@/hooks/use-device";
-import { useServiceWorker } from "@/hooks/use-service-worker";
 import { saveUser, loadOnboarding } from "@/lib/store";
 import { checkStreakReminder, scheduleReminder, loadNotifPrefs } from "@/lib/notifications";
 import { getTotalReviewsDue, getWeakNodes } from "@/lib/spaced-repetition";
 import { getLeague } from "@/lib/leaderboard";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+
+type MeUser = {
+  id: string;
+  name: string;
+  level: "O-Level" | "A-Level";
+  premium: boolean;
+  xp: number;
+  streak: number;
+  lastActiveDate: string | null;
+  onboarding: ReturnType<typeof loadOnboarding>;
+};
 
 export default function DashboardPage() {
-  const user = mockUser;
+  const [me, setMe] = useState<MeUser | null>(null);
   const { lowFidelity } = useDeviceProfile();
-  useServiceWorker();
 
-  const [streakAlert] = useState<string | null>(() => {
-    if (typeof window === "undefined") return null;
-    return checkStreakReminder(user.streak, user.lastActiveDate);
-  });
   const [reviewsDue] = useState(() => {
     if (typeof window === "undefined") return 0;
     return getTotalReviewsDue();
@@ -31,7 +36,49 @@ export default function DashboardPage() {
     return getWeakNodes().length;
   });
 
-  const onboarding = loadOnboarding();
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await fetch("/api/auth/me", { credentials: "include" });
+        if (!res.ok) return;
+        const data = (await res.json()) as { user: MeUser };
+        if (!cancelled && data.user) setMe(data.user);
+      } catch {
+        /* offline */
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  const user = useMemo(
+    () =>
+      me
+        ? {
+            ...mockUser,
+            id: me.id,
+            name: me.name || mockUser.name,
+            level: me.level,
+            premium: me.premium,
+            xp: me.xp,
+            streak: me.streak,
+            lastActiveDate: me.lastActiveDate ?? mockUser.lastActiveDate,
+            avatar:
+              (me.name || mockUser.name).slice(0, 1).toUpperCase() ||
+              mockUser.avatar,
+          }
+        : mockUser,
+    [me]
+  );
+
+  const streakAlert = useMemo(() => {
+    if (typeof window === "undefined") return null;
+    return checkStreakReminder(user.streak, user.lastActiveDate);
+  }, [user.streak, user.lastActiveDate]);
+
+  const onboarding = me?.onboarding ?? loadOnboarding();
   const dailyGoalTarget = onboarding?.dailyGoal ?? 5;
   const lessonsToday = 3;
   const dailyGoal = lessonsToday / dailyGoalTarget;
@@ -54,8 +101,8 @@ export default function DashboardPage() {
   return (
     <main className="min-h-dvh bg-rz-bg pb-24">
       {/* Header */}
-      <header className="px-5 pt-6 pb-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <header className="px-5 pt-6 pb-4 flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3 min-w-0">
           <div className="w-11 h-11 rounded-full bg-gradient-to-br from-rz-primary to-rz-gold flex items-center justify-center text-lg font-bold text-rz-bg">
             {user.avatar}
           </div>
@@ -66,7 +113,22 @@ export default function DashboardPage() {
             <p className="text-xs text-rz-text-muted">{user.level} Focus</p>
           </div>
         </div>
-        <XPBadge xp={user.xp} />
+        <div className="flex items-center gap-2 shrink-0">
+          <XPBadge xp={user.xp} />
+          <button
+            type="button"
+            onClick={async () => {
+              await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+              });
+              window.location.href = "/";
+            }}
+            className="text-[10px] font-medium text-rz-text-muted px-2 py-1 rounded-lg border border-rz-border hover:bg-rz-surface"
+          >
+            Sign out
+          </button>
+        </div>
       </header>
 
       <div className="px-5 space-y-4">

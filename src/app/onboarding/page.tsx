@@ -67,6 +67,25 @@ export default function OnboardingPage() {
       lastNotified: null,
     });
 
+    try {
+      await fetch("/api/user/onboarding", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({
+          completed: true,
+          name,
+          level,
+          subjects: selectedSubjects,
+          examDate,
+          dailyGoal,
+          reminderTime,
+        }),
+      });
+    } catch {
+      /* server may be unavailable; local profile still saved */
+    }
+
     router.push("/dashboard");
   }
 
