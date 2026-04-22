@@ -1,0 +1,12 @@
+litellm>=1.35.0
+python-telegram-bot>=20.0
+mss>=9.0.1
+pillow>=10.0.0
+pyautogui>=0.9.54
+python-dotenv>=1.0.0
+solana>=0.30.0
+solders>=0.18.0
+pyyaml>=6.0
+numpy>=1.24.0
+feedparser>=6.0.10
+requests>=2.31.0

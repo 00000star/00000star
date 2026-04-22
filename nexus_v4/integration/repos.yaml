@@ -1,0 +1,13 @@
+repositories:
+  - name: openinterpreter
+    tarball_url: https://codeload.github.com/OpenInterpreter/open-interpreter/tar.gz/refs/heads/main
+    extract_dir: open-interpreter-main
+    target_dir: external/openinterpreter
+  - name: openclaw
+    tarball_url: https://codeload.github.com/OpenClaw/openclaw/tar.gz/refs/heads/main
+    extract_dir: openclaw-main
+    target_dir: external/openclaw
+  - name: papers-we-love
+    tarball_url: https://codeload.github.com/papers-we-love/papers-we-love/tar.gz/refs/heads/main
+    extract_dir: papers-we-love-main
+    target_dir: external/papers-we-love
