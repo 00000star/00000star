@@ -118,6 +118,15 @@ export default function LoginPage() {
           </button>
         </div>
 
+        <div className="w-full mt-3">
+          <button
+            onClick={() => router.push("/closet")}
+            className="w-full rounded-xl border border-rz-border py-3 text-sm font-medium text-rz-text-muted hover:bg-rz-surface active:scale-[0.98] transition-all"
+          >
+            Try CLOSET Wardrobe Demo
+          </button>
+        </div>
+
         <p className="mt-8 text-[11px] text-rz-text-dim/50 text-center">
           By signing in you agree to our Terms of Service.
           <br />
