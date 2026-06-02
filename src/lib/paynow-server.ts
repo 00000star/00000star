@@ -118,3 +118,35 @@ export async function initiateMobilePayment(
 
   return out;
 }
+
+/** Poll Paynow for transaction status (server-side only). */
+export async function pollTransactionStatus(
+  pollUrl: string
+): Promise<"paid" | "pending" | "failed" | "unknown"> {
+  try {
+    const paynow = createPaynowClient();
+    const raw = await paynow.pollTransaction(pollUrl);
+    if (!raw) return "unknown";
+
+    const r = raw as InitResponse & { status?: string };
+    if (!r.success) {
+      const err = String(r.error ?? "").toLowerCase();
+      if (err.includes("cancel") || err.includes("fail")) return "failed";
+      return "pending";
+    }
+
+    const st = String(r.status ?? "").toLowerCase();
+    if (st === "paid" || st.includes("paid")) return "paid";
+    if (st.includes("cancel") || st.includes("fail") || st === "error") {
+      return "failed";
+    }
+    return "pending";
+  } catch {
+    return "unknown";
+  }
+}
+
+export function parsePaynowStatusUpdate(body: string) {
+  const paynow = createPaynowClient();
+  return paynow.parseStatusUpdate(body);
+}

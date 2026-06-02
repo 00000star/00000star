@@ -17,6 +17,17 @@ declare module "paynow" {
       phone: string,
       method: string
     ): Promise<InitResponse | undefined>;
+    pollTransaction(url: string): Promise<InitResponse | undefined>;
+    parseStatusUpdate(response: string): StatusResponse;
+  }
+
+  export class StatusResponse {
+    reference?: string;
+    amount?: string;
+    paynowReference?: string;
+    pollUrl?: string;
+    status?: string;
+    error?: string;
   }
 
   export class Payment {

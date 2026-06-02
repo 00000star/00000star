@@ -52,10 +52,19 @@ Merchant EcoCash: `0785378845`
 
 ```bash
 npm install
+cp .env.example .env.local
+# Set AUTH_SECRET (32+ chars) and PAYNOW_* if testing payments
+docker compose up -d
+# Apply schema (once):
+psql "$DATABASE_URL" -f scripts/init-db.sql
 npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in a mobile viewport.
+
+**Accounts:** Create an account on the home screen, complete onboarding, then use the app. Routes require a signed session cookie except `/`, `/offline`, and auth/payment callbacks.
+
+**Paynow:** Set `PAYNOW_RESULT_URL` to your public origin + `/api/paynow/result` so Paynow can POST payment updates. Premium is granted when the callback marks an order paid (or when `/api/pay/verify` observes a paid poll).
 
 ## Tech Stack
 

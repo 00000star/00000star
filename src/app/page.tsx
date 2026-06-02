@@ -1,17 +1,36 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { isOnboarded } from "@/lib/store";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const nextPath = searchParams.get("next") || "/dashboard";
+
   const [phone, setPhone] = useState("");
   const [pin, setPin] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [mode, setMode] = useState<"signin" | "register">("signin");
 
-  function handleLogin(e: React.FormEvent) {
+  async function postAuth(url: string) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ phone, pin }),
+    });
+    const data = (await res.json()) as { error?: string };
+    if (!res.ok) {
+      setError(data.error ?? "Something went wrong.");
+      return false;
+    }
+    return true;
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!phone || !pin) {
       setError("Enter your phone number and PIN");
@@ -19,13 +38,35 @@ export default function LoginPage() {
     }
     setLoading(true);
     setError("");
-    setTimeout(() => {
-      if (!isOnboarded()) {
-        router.push("/onboarding");
-      } else {
-        router.push("/dashboard");
+    const ok =
+      mode === "register"
+        ? await postAuth("/api/auth/register")
+        : await postAuth("/api/auth/login");
+    setLoading(false);
+    if (!ok) return;
+
+    try {
+      const me = await fetch("/api/auth/me", { credentials: "include" });
+      if (me.ok) {
+        const j = (await me.json()) as {
+          user?: { onboarding?: { completed?: boolean } | null };
+        };
+        if (j.user?.onboarding?.completed) {
+          router.push(nextPath.startsWith("/") ? nextPath : "/dashboard");
+        } else {
+          router.push("/onboarding");
+        }
+        return;
       }
-    }, 800);
+    } catch {
+      /* fall through */
+    }
+
+    if (!isOnboarded()) {
+      router.push("/onboarding");
+    } else {
+      router.push(nextPath.startsWith("/") ? nextPath : "/dashboard");
+    }
   }
 
   function handleOfflineLogin() {
@@ -53,7 +94,38 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <form onSubmit={handleLogin} className="w-full space-y-4">
+        <div className="flex rounded-xl bg-rz-surface border border-rz-border p-1 w-full mb-4">
+          <button
+            type="button"
+            onClick={() => {
+              setMode("signin");
+              setError("");
+            }}
+            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-colors ${
+              mode === "signin"
+                ? "bg-rz-primary text-rz-bg"
+                : "text-rz-text-muted"
+            }`}
+          >
+            Sign in
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setMode("register");
+              setError("");
+            }}
+            className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-colors ${
+              mode === "register"
+                ? "bg-rz-primary text-rz-bg"
+                : "text-rz-text-muted"
+            }`}
+          >
+            Create account
+          </button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="w-full space-y-4">
           <div>
             <label
               htmlFor="phone"
@@ -67,6 +139,7 @@ export default function LoginPage() {
               placeholder="+263 77 123 4567"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
+              autoComplete="tel"
               className="w-full rounded-xl bg-rz-surface border border-rz-border px-4 py-3 text-rz-text placeholder:text-rz-text-dim/40 focus:outline-none focus:ring-2 focus:ring-rz-primary/50 transition"
             />
           </div>
@@ -75,16 +148,20 @@ export default function LoginPage() {
               htmlFor="pin"
               className="block text-xs font-medium text-rz-text-muted mb-1.5"
             >
-              PIN
+              PIN (4–8 digits)
             </label>
             <input
               id="pin"
               type="password"
               inputMode="numeric"
-              maxLength={6}
+              maxLength={8}
+              minLength={4}
               placeholder="••••••"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
+              autoComplete={
+                mode === "register" ? "new-password" : "current-password"
+              }
               className="w-full rounded-xl bg-rz-surface border border-rz-border px-4 py-3 text-rz-text placeholder:text-rz-text-dim/40 focus:outline-none focus:ring-2 focus:ring-rz-primary/50 transition"
             />
           </div>
@@ -101,8 +178,10 @@ export default function LoginPage() {
             {loading ? (
               <span className="inline-flex items-center gap-2">
                 <span className="w-4 h-4 border-2 border-rz-bg/30 border-t-rz-bg rounded-full animate-spin" />
-                Signing in...
+                {mode === "register" ? "Creating account…" : "Signing in…"}
               </span>
+            ) : mode === "register" ? (
+              "Create account"
             ) : (
               "Sign In"
             )}
@@ -111,6 +190,7 @@ export default function LoginPage() {
 
         <div className="w-full mt-4">
           <button
+            type="button"
             onClick={handleOfflineLogin}
             className="w-full rounded-xl border border-rz-border py-3 text-sm font-medium text-rz-text-muted hover:bg-rz-surface active:scale-[0.98] transition-all"
           >
@@ -134,5 +214,19 @@ export default function LoginPage() {
         </p>
       </div>
     </main>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="flex min-h-dvh items-center justify-center bg-rz-bg">
+          <span className="w-8 h-8 border-2 border-rz-primary/30 border-t-rz-primary rounded-full animate-spin" />
+        </main>
+      }
+    >
+      <LoginForm />
+    </Suspense>
   );
 }

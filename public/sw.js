@@ -1,7 +1,6 @@
-const CACHE_NAME = "nhaka-v1";
-const STATIC_ASSETS = [
+const CACHE_NAME = "nhaka-v2-static";
+const STATIC_PATHS = [
   "/",
-  "/dashboard",
   "/manifest.json",
   "/icon-192.svg",
   "/icon-512.svg",
@@ -9,7 +8,7 @@ const STATIC_ASSETS = [
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_ASSETS))
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(STATIC_PATHS))
   );
   self.skipWaiting();
 });
@@ -26,17 +25,31 @@ self.addEventListener("activate", (event) => {
 });
 
 self.addEventListener("fetch", (event) => {
-  if (event.request.method !== "GET") return;
+  const req = event.request;
+  if (req.method !== "GET") return;
+  const url = new URL(req.url);
+  if (url.origin !== self.location.origin) return;
+
+  if (
+    url.pathname.startsWith("/api/") ||
+    url.pathname.startsWith("/_next/")
+  ) {
+    return;
+  }
+
+  if (url.pathname.endsWith(".json") && url.pathname.includes("hot-update")) {
+    return;
+  }
 
   event.respondWith(
-    fetch(event.request)
+    fetch(req)
       .then((response) => {
-        const clone = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, clone);
-        });
+        if (response.ok && response.type === "basic") {
+          const clone = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, clone));
+        }
         return response;
       })
-      .catch(() => caches.match(event.request))
+      .catch(() => caches.match(req))
   );
 });
