@@ -1,70 +1,76 @@
-# Nhaka
+# Hi, I'm Craig Zifunzi 👋
 
-**Gamified, offline-first learning platform for ZIMSEC O-Level & A-Level students.**
+**AI Systems Engineer | Autonomous Agents, Inference Infrastructure & Linux/Android Automation**  
+📍 Harare, Zimbabwe (100% Global Remote) • ✉️ [kzodrax@gmail.com](mailto:kzodrax@gmail.com) • 🌐 [Portfolio](https://github.com/00000star/portfolio) • 🤗 [Hugging Face](https://huggingface.co/Starboy001)
 
-*Nhaka* (Shona: "heritage/inheritance") is a mobile-first Progressive Web App designed for the Zimbabwean education market, aligned to the Heritage-Based Education 2024–2030 Curriculum. It transforms ZIMSEC past papers into interactive micro-lessons, timed mock exams, and AI-graded essays — optimized for low-end Android devices, intermittent connectivity, and battery constraints.
+---
 
-## Features
+### 🚀 Engineering Overview
 
-- **11 ZIMSEC subjects** — all 5 compulsory + 6 popular electives
-- **Spaced Repetition** — SM-2 algorithm tracks wrong answers and resurfaces them at expanding intervals
-- **Onboarding Flow** — subject selection, daily goal, exam countdown, notification setup
-- **Leaderboards** — 4-tier league system (Bronze → Diamond) with school-based rankings
-- **Push Notifications** — daily reminders, streak-at-risk alerts
-- **KaTeX LaTeX Rendering** — crisp mathematical typography
-- **Timed Mock Exams** — full ZIMSEC Paper 1 simulation
-- **AI Essay Grader** — structural feedback for Humanities essays
-- **SBP Portfolio Tracker** — Kanban board for School-Based Projects
-- **Offline Data Manager** — module downloads with CRDT event sync
-- **Payment Integration** — EcoCash, InnBucks, WhatsApp-to-Parent via Paynow
+I am an independent AI Systems Engineer specializing in autonomous agent execution runtimes, GPU inference infrastructure, and resilient software for resource-constrained environments. 
 
-## Subjects
+My engineering focus spans **observable execution, bounded retries, automated verification, deterministic safety guardrails, and low-level system recovery**. Over 50+ repositories, I bridge high-level model reasoning with robust Linux, Android, and cloud infrastructure.
 
-### Compulsory (every O-Level student)
-| Subject | Code | Topics |
-|---------|------|--------|
-| Mathematics | 4004 | 12 nodes: Arithmetic → Vectors |
-| English Language | 1122 | 5 nodes: Comprehension → Report Writing |
-| Shona | 3159 | 4 nodes: Grammar → Comprehension |
-| Combined Science | 5006 | 4 nodes: Living Things → Environment |
-| Heritage Studies | 6081 | 5 nodes: Socialisation → Constitution |
+---
 
-### Electives
-| Subject | Code | Topics |
-|---------|------|--------|
-| Physics | 5055 | 6 nodes: Measurement → Nuclear |
-| Chemistry | 5071 | 6 nodes: Atomic Structure → Organic |
-| Biology | 5007 | 5 nodes: Cell Biology → Ecology |
-| History | 2167 | 4 nodes: Pre-Colonial → Regional |
-| Geography | 2248 | 4 nodes: Map Work → Population |
-| Accounting | 7112 | 3 nodes: Double Entry → Cash Book |
+### 🏛️ Core Showcase & Engineering Pillars
 
-## Monetization
-
-Payments via **Paynow Zimbabwe** (EcoCash, InnBucks, OneMoney, Visa/MC):
-- Monthly: $2.99
-- Per Term: $6.99
-- Full Year: $14.99
-
-Merchant EcoCash: `0785378845`
-
-## Getting Started
-
-```bash
-npm install
-npm run dev
+```
+┌────────────────────────────────────────────────────────┐
+│               Autonomous Agent Runtime                 │
+│      [DAG Planner] ➔ [Tool Dispatch] ➔ [OAV Loop]      │
+│     State Persistence • Bounded Retries • Supervisor   │
+└──────────────────────────┬─────────────────────────────┘
+                           │
+        ┌──────────────────┴──────────────────┐
+        ▼                                     ▼
+┌───────────────────────────────┐ ┌───────────────────────────────┐
+│     Inference Infrastructure  │ │    Safety & Red-Teaming       │
+│  FastAPI Proxy • A10G (sm_86) │ │  anti-rrsi: Blast-Radius Sand-│
+│  ZeroGPU Dynamic Quota Alloc  │ │  boxing • Deterministic Evals │
+└───────────────────────────────┘ └───────────────────────────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in a mobile viewport.
+#### 1. Autonomous Agent Execution Runtimes (`jonn` & `hermes-ascendant`)
+* **Problem**: Standard LLM tool execution lacks state persistence and fails ungracefully when commands hang, crash, or hit resource exhaustion.
+* **Architecture**: Modular agent loop with DAG task decomposition, structured tool dispatch, persistent disk-backed memory, and bounded retry handlers for recoverable errors.
+* **Reliability & Supervision**: Background supervisor with POSIX signal handling (`SIGTERM`/`SIGHUP`), restart policies, and OOM-aware process management to recover from worker termination; automated CI testing in GitHub Actions.
 
-## Tech Stack
+#### 2. GPU Inference Proxy & Backend Routing (`zerogpu-flash` / STARBOY PRIME)
+* **Problem**: Interactive agent loops require responsive token streaming without over-allocating costly dedicated GPU instances or exceeding shared quotas.
+* **Architecture**: Asynchronous FastAPI proxy capable of routing requests across configurable backends—supporting dedicated NVIDIA A10G (`sm_86`) endpoints and Hugging Face ZeroGPU dynamic allocations.
+* **Reliability**: Exponential backoff, quota-aware fallback routing, connection pooling, and payload parsing validated against 400+ serialized evaluation fixtures.
 
-- Next.js 16 (App Router) + TypeScript
-- Tailwind CSS v4 (AMOLED dark theme)
-- KaTeX for LaTeX rendering
-- Paynow Node.js SDK for payments
-- PWA with service worker
+#### 3. AI Safety & Red-Teaming Framework ([`anti-rrsi`](https://github.com/00000star/anti-rrsi))
+* **Problem**: Code-executing agents pose severe risks of unbounded tool calls, credential leakage, and unsafe self-modification.
+* **Architecture**: Empirical safety harness intercepting, sandboxing, and auditing autonomous tool execution against strict blast-radius constraints.
+* **Verification**: Reproducible red-teaming test suites simulating privilege escalation, secret leakage, and unauthorized system commands.
 
-## Name
+#### 4. Android UI Automation & Low-Level Systems ([`android-device-control`](https://github.com/00000star))
+* **Problem**: Mobile automation on Android breaks from dynamic view hierarchies and containerized network sandbox failures.
+* **Implementation**: Python-based automation engine parsing UI hierarchy trees into indexed coordinate targets with strict Observe-Act-Verify loops.
+* **Systems Hack**: Authored a standard-library UDP DNS fallback to resolve network hosts where Android Bionic libc `getaddrinfo` fails inside Termux containers.
 
-**Nhaka** — Shona for "heritage" or "inheritance." Connects directly to Zimbabwe's Heritage-Based Education Curriculum and represents the knowledge students inherit and build upon.
+---
+
+### 🛠️ Technical Arsenal
+
+| Domain | Technologies & Tooling |
+| :--- | :--- |
+| **Languages** | Python (Advanced), Rust, TypeScript, Bash/POSIX Shell, Dart, Kotlin, SQL |
+| **Agentic Systems** | Observe-Act-Verify Loops, DAG Task Planners, Bounded Retries, Tool Calling, Persistent Memory |
+| **Cloud & Inference** | FastAPI, Hugging Face Spaces (A10G `sm_86` & ZeroGPU), WebSockets, GitHub Actions CI/CD |
+| **Systems & Mobile** | Linux Daemon Management, Process Lifecycle & OOM Recovery, Android Internals, Termux |
+| **Distributed / Offline** | Offline-First PWA, P2P Streaming Mesh ([moviebox-mesh](https://github.com/00000star/moviebox-mesh)), Traffic-Budget Controls |
+
+---
+
+### 📈 GitHub Highlights
+
+* **55+ Public & Private Engineering Repositories**
+* **Active Maintainer**: Modular agent skills, mobile automation toolkits, and offline resilience protocols.
+* **Portfolio**: Explore interactive architecture diagrams and live demos at [github.com/00000star/portfolio](https://github.com/00000star/portfolio).
+
+---
+
+> *"Build for resilience under constraints; verify every execution path."*
